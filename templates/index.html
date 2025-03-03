@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Recommendation System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <style>
+        .animate-in {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .wave {
+            position: relative;
+            overflow: hidden;
+            transform: translate3d(0, 0, 0);
+        }
+
+        .wave:before, .wave:after {
+            content: "";
+            display: block;
+            position: absolute;
+            border-radius: 100%;
+            width: 100%;
+            height: 250%;
+            animation: wave 8s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+        }
+
+        .wave:before {
+            background-color: rgba(129, 199, 243, 0.4);
+            top: -35%;
+        }
+
+        .wave:after {
+            background-color: rgba(129, 199, 243, 0.6);
+            top: -45%;
+            left: 10%;
+            animation-duration: 12s;
+        }
+
+        @keyframes wave {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #a8c0ff,rgb(251, 251, 253));
+        }
+
+        .image-circle {
+          border-radius: 100%;
+          overflow: hidden;
+          width: 500px;
+          height: 500px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col gradient-bg">
+    <header class="bg-white bg-opacity-80 text-blue-800 text-center py-6 text-3xl font-extrabold shadow-lg flex justify-between items-center px-10 wave">
+        <div class="animate-in">Health Recommendation System</div>
+    </header>
+
+    <div class="flex flex-col md:flex-row items-center justify-center flex-grow p-8 gap-20">
+        <div class="w-full md:w-1/3 flex justify-center animate-in floating">
+            <div class="image-circle">
+                <img src="https://kit8.net/wp-content/uploads/edd/2023/02/small_space_preview.jpg" class="object-cover w-full h-full">
+            </div>
+        </div>
+
+        <div class="w-full md:w-1/3 bg-white p-10 rounded-2xl animate-in shadow-xl">
+            <h2 class="text-center text-2xl font-semibold text-blue-800 mb-6">Personal Health Data</h2>
+            <form id="healthForm" class="space-y-6">
+                <div class="grid grid-cols-2 gap-6">
+                    <input type="number" id="age" placeholder="Age" class="p-4 border rounded-xl focus:ring-2 focus:ring-blue-500 border-gray-300">
+                    <input type="number" id="bmi" placeholder="BMI" class="p-4 border rounded-xl focus:ring-2 focus:ring-blue-500 border-gray-300">
+                    <input type="number" id="bp" placeholder="Blood Pressure" class="p-4 border rounded-xl focus:ring-2 focus:ring-blue-500 border-gray-300">
+                    <input type="number" id="sleep" placeholder="Sleep Hours" class="p-4 border rounded-xl focus:ring-2 focus:ring-blue-500 border-gray-300">
+                    <input type="number" id="stress" placeholder="Stress (1-10)" class="p-4 border rounded-xl focus:ring-2 focus:ring-blue-500 border-gray-300">
+                    <input type="number" id="exercise" placeholder="Exercise (hrs/wk)" class="p-4 border rounded-xl focus:ring-2 focus:ring-blue-500 border-gray-300">
+                    <input type="number" id="cholesterol" placeholder="Cholesterol" class="p-4 border rounded-xl focus:ring-2 focus:ring-blue-500 border-gray-300">
+                    <input type="number" id="heart_rate" placeholder="Heart Rate" class="p-4 border rounded-xl focus:ring-2 focus:ring-blue-500 border-gray-300">
+                    <input type="number" id="diet_score" placeholder="Diet (1-10)" class="p-4 border rounded-xl focus:ring-2 focus:ring-blue-500 border-gray-300">
+                    <input type="number" id="hydration_level" placeholder="Hydration (1-10)" class="p-4 border rounded-xl focus:ring-2 focus:ring-blue-500 border-gray-300">
+                    <select id="medications" class="col-span-2 p-4 border rounded-xl focus:ring-2 focus:ring-blue-500 border-gray-300">
+                        <option value="No">No Medications</option>
+                        <option value="Yes">Taking Medications</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-blue-500 text-white py-4 rounded-xl hover:bg-blue-600 transition duration-300 font-semibold">Get Recommendation</button>
+            </form>
+            <p id="result" class="mt-6 text-center text-gray-700"></p>
+        </div>
+    </div>
+
+    <script>
+        // GSAP Animations
+        window.onload = function () {
+            gsap.to(".animate-in", { opacity: 1, y: 0, duration: 1, stagger: 0.2 });
+        };
+
+        // Enter Key Navigation
+        document.addEventListener("DOMContentLoaded", function () {
+            const inputs = document.querySelectorAll("input, select");
+            
+            inputs.forEach((input, index) => {
+                input.addEventListener("keydown", (event) => {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        if (index < inputs.length - 1) {
+                            inputs[index + 1].focus();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
