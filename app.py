@@ -1,12 +1,12 @@
 from flask import Flask, render_template, request, jsonify
 import numpy as np
-import joblib  # Changed from pickle to joblib
+import joblib
 
 app = Flask(__name__)
 
-# Load ML model and preprocessing tools
-model = joblib.load("model/health_model.pkl")  # Updated to use joblib
-scaler = joblib.load("model/scaler.pkl")  # Updated to use joblib
+# Loading ML model and preprocessing tools
+model = joblib.load("model/health_model.pkl")
+scaler = joblib.load("model/scaler.pkl") 
 
 def recommend_healthcare(age, cluster, bmi, bp, sleep, stress, hydration, exercise, diet_score, cholesterol, heart_rate, medications):
     recommendations = []
@@ -94,7 +94,7 @@ def home():
 def predict():
     data = request.get_json()
 
-    # Validate input data
+    # Validating input data
     try:
         features = np.array([[float(data["age"]), float(data["bmi"]), float(data["bp"]), 
                               float(data["sleep"]), float(data["stress"]),
@@ -104,13 +104,13 @@ def predict():
     except ValueError:
         return jsonify({"error": "Invalid input values. Please enter numerical values."}), 400
 
-    # Scale features
+    # Scaling features
     features_scaled = scaler.transform(features)
 
-    # Predict cluster
+    # Predicting cluster
     cluster = model.predict(features_scaled)[0]
 
-    # Generate recommendation
+    # Generating recommendation
     recommendation = recommend_healthcare(
         float(data["age"]), cluster, float(data["bmi"]), float(data["bp"]),
         float(data["sleep"]), float(data["stress"]), float(data["hydration_level"]),
