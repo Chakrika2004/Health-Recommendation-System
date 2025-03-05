@@ -1,14 +1,12 @@
 from flask import Flask, render_template, request, jsonify
 import numpy as np
-import pickle
+import joblib  # Changed from pickle to joblib
 
 app = Flask(__name__)
 
 # Load ML model and preprocessing tools
-with open("model/health_model.pkl", "rb") as f:
-    model = pickle.load(f)
-with open("model/scaler.pkl", "rb") as f:
-    scaler = pickle.load(f)
+model = joblib.load("model/health_model.pkl")  # Updated to use joblib
+scaler = joblib.load("model/scaler.pkl")  # Updated to use joblib
 
 def recommend_healthcare(age, cluster, bmi, bp, sleep, stress, hydration, exercise, diet_score, cholesterol, heart_rate, medications):
     recommendations = []
