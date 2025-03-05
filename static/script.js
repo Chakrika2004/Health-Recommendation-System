@@ -1,5 +1,5 @@
 document.getElementById("healthForm").addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevent form submission
+    event.preventDefault(); 
 
     // Get input values
     let age = parseInt(document.getElementById("age").value);
@@ -12,12 +12,12 @@ document.getElementById("healthForm").addEventListener("submit", function (event
     let heartRate = parseFloat(document.getElementById("heart_rate").value);
     let dietScore = parseFloat(document.getElementById("diet_score").value);
     let hydrationLevel = parseFloat(document.getElementById("hydration_level").value);
-    let medications = document.getElementById("medications").value === "Yes"; // Convert to Boolean
+    let medications = document.getElementById("medications").value === "Yes"; 
 
     // Validation rules with real-time input feedback
     let errors = [];
     let resultElement = document.getElementById("result");
-    resultElement.innerHTML = ""; // Clear previous messages
+    resultElement.innerHTML = ""; 
 
     function validate(field, condition, message) {
         if (condition) {
@@ -40,20 +40,20 @@ document.getElementById("healthForm").addEventListener("submit", function (event
     validate(document.getElementById("cholesterol"), cholesterol < 50 || cholesterol > 300, "Cholesterol level must be between 50 and 300.");
     validate(document.getElementById("heart_rate"), heartRate < 40 || heartRate > 200, "Heart Rate must be between 40 and 200.");
 
-    // Display error messages
+    // Displaying error messages
     if (errors.length > 0) {
         resultElement.innerHTML = `<span style="color:red;">${errors.join("<br>")}</span>`;
-        resultElement.scrollIntoView({ behavior: "smooth" }); // Bring error messages into view
-        return; // Stop execution if there are errors
+        resultElement.scrollIntoView({ behavior: "smooth" }); 
+        return; 
     }
 
-    // Prepare data for sending
+    // Preparing data for sending
     let requestData = {
         age, bmi, bp, sleep, stress, exercise, cholesterol, 
         heart_rate: heartRate, diet_score: dietScore, hydration_level: hydrationLevel, medications
     };
 
-    // Send request to Flask API
+    // Sending request to Flask API
     fetch("/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
